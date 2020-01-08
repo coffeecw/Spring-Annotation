@@ -3,7 +3,7 @@ package cn.cwcoffee.config;
 import cn.cwcoffee.bean.Person;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.Lazy;
 
 /**
  * @Author cw
@@ -21,9 +21,16 @@ public class MainConfig2 {
      * session 同一个session创建一个实例
      * @return
      */
-    @Scope("prototype")
+//    @Scope("prototype")
+    /**
+     * 懒加载  针对单例模式
+     *      单实例Bean:默认在容器启动的时候创建对象
+     *      懒加载:容器启动不创建对象，第一次使用(获取)Bean创建对象,并初始化
+     */
+    @Lazy
     @Bean("person02")
     public Person person(){
+        System.out.println("给容器中添加Person...");
         return new Person("张三",36);
     }
 }
