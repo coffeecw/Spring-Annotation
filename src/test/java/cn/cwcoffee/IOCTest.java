@@ -1,6 +1,7 @@
 package cn.cwcoffee;
 
 import cn.cwcoffee.config.MainConfig;
+import cn.cwcoffee.config.MainConfig2;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -18,5 +19,18 @@ public class IOCTest {
         for (String definitionName : definitionNames) {
             System.out.println(definitionName);
         }
+    }
+
+    @Test
+    public void test02(){
+        ApplicationContext context = new AnnotationConfigApplicationContext(MainConfig2.class);
+        //获取bean定义的名字
+        String[] definitionNames = context.getBeanDefinitionNames();
+        for (String definitionName : definitionNames) {
+            System.out.println(definitionName);
+        }
+        Object person02 = context.getBean("person02");
+        Object person03 = context.getBean("person02");
+        System.out.println(person02==person03);
     }
 }
