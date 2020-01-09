@@ -55,4 +55,12 @@ public class IOCTest {
         System.out.println(personMap);
     }
 
+    @Test
+    public void testImport(){
+        ApplicationContext context = new AnnotationConfigApplicationContext(MainConfig2.class);
+        String[] beanDefinitionNames = context.getBeanDefinitionNames();
+        for (String beanDefinitionName : beanDefinitionNames) {
+            System.out.println(beanDefinitionName);
+        }
+    }
 }

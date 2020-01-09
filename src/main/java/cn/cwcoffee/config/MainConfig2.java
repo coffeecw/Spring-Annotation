@@ -1,20 +1,22 @@
 package cn.cwcoffee.config;
 
+import cn.cwcoffee.bean.Blue;
 import cn.cwcoffee.bean.Person;
+import cn.cwcoffee.bean.Red;
 import cn.cwcoffee.condition.LinuxCondition;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
+import cn.cwcoffee.condition.WindowsCondition;
+import org.springframework.context.annotation.*;
 
 /**
  * @Author cw
  * @Date 2020/1/8 22:25
  */
 //类中组件同一设置:满足当前条件，这个类中配置的所有的bean注册才能生效(@Conditional注解放在类上)
-
-@Conditional({LinuxCondition.class})
+/*@Conditional({LinuxCondition.class})*/
 @Configuration
+@Import({Blue.class, Red.class})
+//@Import导入组件，id默认是组件的全类名
+
 public class MainConfig2 {
     /**
      * 默认是单例的
@@ -45,15 +47,24 @@ public class MainConfig2 {
      * 如果系统为Windows 则将Bill注册到容器
      * 如果系统为Linux 则将Linus注册到容器
      */
-    /*@Conditional({WindowsCondition.class})*/
+    @Conditional({WindowsCondition.class})
     @Bean("Bill")
     public Person person02(){
         return new Person("Bill Getes",65);
     }
 
-    /*@Conditional({LinuxCondition.class})*/
+    @Conditional({LinuxCondition.class})
     @Bean("Linus")
     public Person person03(){
         return new Person("Linus",48);
     }
+
+    /**
+     * 给容器中注册组件方式总结:
+     * 1)、包扫描+组件标注注解(@Controller/@Service/@Repository/@Component)[局限于自己写的类]
+     * 2)、@Bean[导入的第三方包里面的组件]
+     * 3)、@Import[快速给容器中导入一个组件]
+     *      1)、@Import(要导入到容器的组件):容器中就会自动注册这个组件，id默认是全类名
+     */
+
 }
