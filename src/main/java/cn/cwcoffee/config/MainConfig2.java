@@ -1,7 +1,9 @@
 package cn.cwcoffee.config;
 
 import cn.cwcoffee.bean.Person;
+import cn.cwcoffee.condition.LinuxCondition;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
@@ -9,6 +11,9 @@ import org.springframework.context.annotation.Lazy;
  * @Author cw
  * @Date 2020/1/8 22:25
  */
+//类中组件同一设置:满足当前条件，这个类中配置的所有的bean注册才能生效(@Conditional注解放在类上)
+
+@Conditional({LinuxCondition.class})
 @Configuration
 public class MainConfig2 {
     /**
@@ -32,5 +37,23 @@ public class MainConfig2 {
     public Person person(){
         System.out.println("给容器中添加Person...");
         return new Person("张三",36);
+    }
+    /**
+     * @Conditional 按照一定条件进行判断，满足条件给容器中注册bean
+     * 可以放在方法上，也可以放在类上
+     * 需求:
+     * 如果系统为Windows 则将Bill注册到容器
+     * 如果系统为Linux 则将Linus注册到容器
+     */
+    /*@Conditional({WindowsCondition.class})*/
+    @Bean("Bill")
+    public Person person02(){
+        return new Person("Bill Getes",65);
+    }
+
+    /*@Conditional({LinuxCondition.class})*/
+    @Bean("Linus")
+    public Person person03(){
+        return new Person("Linus",48);
     }
 }
